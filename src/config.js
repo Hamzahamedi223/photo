@@ -1,10 +1,11 @@
 // ------------------------------------------------------------------
 // Memory Print — business details
 // Edit the values below to change them everywhere on the site.
+// The tagline, address, opening hours and all other text live in
+// src/i18n.jsx (French + Arabic).
 // ------------------------------------------------------------------
 export const site = {
   name: 'Memory Print',
-  tagline: 'Your Moments, Our Prints.',
 
   // WhatsApp number in international format, digits only (no +, spaces or dashes).
   // Tunisia (+216) + 22 398 788
@@ -12,8 +13,6 @@ export const site = {
   phoneDisplay: '+216 22 398 788',
 
   email: 'photomahdia@outlook.fr',
-  address: 'Mahdia, Tunisia',
-  hours: [{ days: 'Every day', time: 'Open 24/7' }],
 
   // Leave empty ('') to hide a social icon.
   instagram: '',

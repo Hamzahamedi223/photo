@@ -1,58 +1,50 @@
+import { useLang } from '../i18n'
 import Feature from './Feature'
 import Reveal from './Reveal'
 
-const themes = [
-  { name: 'Wedding', img: '/images/album-wedding.jpg' },
-  { name: 'Baby', img: '/images/album-baby.jpg' },
-  { name: 'Family', img: '/images/album-family.jpg' },
-  { name: 'Travel', img: '/images/album-travel.jpg' },
-  { name: 'Birthday', img: '/images/album-birthday.jpg' },
-  { name: 'Occasions', img: '/images/album-occasions.jpg' },
-]
+const themes = ['wedding', 'baby', 'family', 'travel', 'birthday', 'occasions']
 
 export default function Albums() {
+  const { t } = useLang()
+  const a = t.albums
+
   return (
     <>
       <Feature
         id="albums"
         tint="bg-blush-50"
         reverse
-        eyebrow="Photo albums"
-        title="Handmade albums for the stories you tell twice"
-        text="Choose your photos and we'll design, print and bind an album that feels as special as the day itself. Every album is assembled by hand in our studio."
-        points={[
-          'Custom layout designed with you',
-          'Hardcover, linen and leather-look covers',
-          'Thick lay-flat pages that last for years',
-          'Personalised cover text or names',
-        ]}
+        eyebrow={a.eyebrow}
+        title={a.title}
+        text={a.text}
+        points={a.points}
         mainImg="/images/albums-main.jpg"
-        mainAlt="A handmade photo album open on a table"
-        cta="Start your album"
-        message="Hello Memory Print! I'd like to create a photo album."
+        mainAlt={a.mainAlt}
+        cta={a.cta}
+        message={t.wa.album}
       />
 
       <section className="bg-blush-50 pb-24 lg:pb-32">
         <div className="mx-auto max-w-7xl px-5 sm:px-8">
           <Reveal>
-            <h3 className="text-center text-2xl font-medium sm:text-3xl">An album for every moment</h3>
+            <h3 className="text-center text-2xl font-medium sm:text-3xl">{a.themesTitle}</h3>
           </Reveal>
           <div className="mt-10 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
-            {themes.map((t, i) => (
+            {themes.map((id, i) => (
               <Reveal
-                key={t.name}
+                key={id}
                 delay={i * 70}
                 className="group relative overflow-hidden rounded-3xl shadow-soft"
               >
                 <img
-                  src={t.img}
-                  alt={`${t.name} photo album`}
+                  src={`/images/album-${id}.jpg`}
+                  alt={a.themeAlt(a.themes[id])}
                   loading="lazy"
                   className="aspect-[3/4] w-full object-cover transition-transform duration-700 ease-out-soft group-hover:scale-105"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-ink-900/70 via-ink-900/0 to-transparent" />
-                <span className="absolute bottom-4 left-4 font-display text-lg text-cream-50">
-                  {t.name}
+                <span className="absolute start-4 bottom-4 font-display text-lg text-cream-50">
+                  {a.themes[id]}
                 </span>
               </Reveal>
             ))}

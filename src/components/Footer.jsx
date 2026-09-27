@@ -1,7 +1,11 @@
 import { site, whatsappLink } from '../config'
+import { useLang } from '../i18n'
 import { FacebookIcon, InstagramIcon, WhatsAppIcon } from './Icons'
 
+const sections = ['services', 'printing', 'albums', 'cards', 'gallery', 'contact']
+
 export default function Footer() {
+  const { t } = useLang()
   const socials = [
     { href: site.instagram, label: 'Instagram', icon: InstagramIcon },
     { href: site.facebook, label: 'Facebook', icon: FacebookIcon },
@@ -16,13 +20,13 @@ export default function Footer() {
             <img src="/logo-mark.svg" alt="" className="h-9 w-9" />
             <span className="font-display text-xl font-semibold text-cream-50">{site.name}</span>
           </a>
-          <p className="mt-3 font-display text-cream-200/60 italic">{site.tagline}</p>
+          <p className="mt-3 font-display text-cream-200/60 italic">{t.tagline}</p>
         </div>
 
         <nav className="flex flex-wrap gap-x-7 gap-y-3 text-sm">
-          {['Services', 'Printing', 'Albums', 'Cards', 'Gallery', 'Contact'].map((l) => (
-            <a key={l} href={`#${l.toLowerCase()}`} className="hover:text-cream-50">
-              {l}
+          {sections.map((id) => (
+            <a key={id} href={`#${id}`} className="hover:text-cream-50">
+              {t.nav[id]}
             </a>
           ))}
         </nav>
@@ -44,7 +48,7 @@ export default function Footer() {
       </div>
       <div className="border-t border-cream-50/10">
         <p className="mx-auto max-w-7xl px-5 py-6 text-xs text-cream-200/50 sm:px-8">
-          © {new Date().getFullYear()} {site.name}. All rights reserved.
+          © {new Date().getFullYear()} {site.name}. {t.footer.rights}
         </p>
       </div>
     </footer>

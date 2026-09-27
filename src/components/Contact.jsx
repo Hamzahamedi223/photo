@@ -1,22 +1,24 @@
 import { useState } from 'react'
 import { site, whatsappLink } from '../config'
+import { useLang } from '../i18n'
 import Reveal from './Reveal'
 import { ClockIcon, MailIcon, PhoneIcon, PinIcon, WhatsAppIcon } from './Icons'
-
-const serviceOptions = ['Photo printing', 'Photo album', 'Business cards', 'Something else']
 
 // There is no server behind this site, so the form builds a ready-to-send
 // WhatsApp message with the customer's request instead.
 export default function Contact() {
-  const [form, setForm] = useState({ name: '', service: serviceOptions[0], message: '' })
+  const { t } = useLang()
+  const c = t.contact
+  // `service` is an index into c.options so it survives a language switch.
+  const [form, setForm] = useState({ name: '', service: 0, message: '' })
   const update = (k) => (e) => setForm((f) => ({ ...f, [k]: e.target.value }))
 
   const onSubmit = (e) => {
     e.preventDefault()
     const text = [
-      `Hello ${site.name}!`,
-      form.name && `My name is ${form.name}.`,
-      `I'm interested in: ${form.service}.`,
+      t.wa.hello,
+      form.name && c.myName(form.name),
+      c.interested(c.options[form.service]),
       form.message,
     ]
       .filter(Boolean)
@@ -31,18 +33,16 @@ export default function Contact() {
     <section id="contact" className="bg-cream-100 py-24 lg:py-32">
       <div className="mx-auto grid max-w-7xl gap-14 px-5 sm:px-8 lg:grid-cols-[1fr_1.1fr] lg:gap-20">
         <Reveal>
-          <p className="eyebrow">Contact</p>
-          <h2 className="mt-4 text-4xl font-medium sm:text-5xl">Let's print your memories</h2>
-          <p className="mt-5 text-lg leading-relaxed text-ink-500">
-            Tell us what you have in mind — we usually reply within a few hours.
-          </p>
+          <p className="eyebrow">{c.eyebrow}</p>
+          <h2 className="mt-4 text-4xl font-medium sm:text-5xl">{c.title}</h2>
+          <p className="mt-5 text-lg leading-relaxed text-ink-500">{c.text}</p>
 
           <ul className="mt-10 space-y-6">
             <li className="flex gap-4">
               <Badge><PhoneIcon className="h-5 w-5" /></Badge>
               <div>
-                <p className="text-sm text-ink-400">Phone / WhatsApp</p>
-                <a href={whatsappLink()} target="_blank" rel="noreferrer" className="font-medium text-ink-900 hover:text-rose-600">
+                <p className="text-sm text-ink-400">{c.phone}</p>
+                <a href={whatsappLink()} target="_blank" rel="noreferrer" dir="ltr" className="font-medium text-ink-900 hover:text-rose-600">
                   {site.phoneDisplay}
                 </a>
               </div>
@@ -50,8 +50,8 @@ export default function Contact() {
             <li className="flex gap-4">
               <Badge><MailIcon className="h-5 w-5" /></Badge>
               <div>
-                <p className="text-sm text-ink-400">Email</p>
-                <a href={`mailto:${site.email}`} className="font-medium text-ink-900 hover:text-rose-600">
+                <p className="text-sm text-ink-400">{c.email}</p>
+                <a href={`mailto:${site.email}`} dir="ltr" className="font-medium text-ink-900 hover:text-rose-600">
                   {site.email}
                 </a>
               </div>
@@ -59,17 +59,17 @@ export default function Contact() {
             <li className="flex gap-4">
               <Badge><PinIcon className="h-5 w-5" /></Badge>
               <div>
-                <p className="text-sm text-ink-400">Studio</p>
-                <p className="font-medium text-ink-900">{site.address}</p>
+                <p className="text-sm text-ink-400">{c.studio}</p>
+                <p className="font-medium text-ink-900">{c.address}</p>
               </div>
             </li>
             <li className="flex gap-4">
               <Badge><ClockIcon className="h-5 w-5" /></Badge>
               <div>
-                <p className="text-sm text-ink-400">Opening hours</p>
-                {site.hours.map((h) => (
+                <p className="text-sm text-ink-400">{c.hoursLabel}</p>
+                {c.hours.map((h) => (
                   <p key={h.days} className="font-medium text-ink-900">
-                    {h.days}: <span className="font-normal text-ink-500">{h.time}</span>
+                    {h.days} — <span className="font-normal text-ink-500">{h.time}</span>
                   </p>
                 ))}
               </div>
@@ -79,30 +79,28 @@ export default function Contact() {
 
         <Reveal delay={120}>
           <form onSubmit={onSubmit} className="rounded-4xl bg-cream-50 p-7 shadow-soft sm:p-10">
-            <h3 className="text-2xl font-medium">Send us a request</h3>
-            <p className="mt-2 text-sm text-ink-500">
-              This opens WhatsApp with your message ready to send.
-            </p>
+            <h3 className="text-2xl font-medium">{c.formTitle}</h3>
+            <p className="mt-2 text-sm text-ink-500">{c.formNote}</p>
 
             <label className="mt-7 block text-sm font-medium text-ink-700">
-              Your name
-              <input className={field} value={form.name} onChange={update('name')} placeholder="Jane Doe" autoComplete="name" />
+              {c.name}
+              <input className={field} value={form.name} onChange={update('name')} placeholder={c.namePlaceholder} autoComplete="name" />
             </label>
 
             <label className="mt-5 block text-sm font-medium text-ink-700">
-              What are you interested in?
+              {c.interest}
               <select className={field} value={form.service} onChange={update('service')}>
-                {serviceOptions.map((o) => <option key={o}>{o}</option>)}
+                {c.options.map((o, i) => <option key={i} value={i}>{o}</option>)}
               </select>
             </label>
 
             <label className="mt-5 block text-sm font-medium text-ink-700">
-              Message
+              {c.message}
               <textarea
                 className={`${field} min-h-32 resize-y`}
                 value={form.message}
                 onChange={update('message')}
-                placeholder="E.g. 40 prints in 10×15, matte finish…"
+                placeholder={c.messagePlaceholder}
                 required
               />
             </label>
@@ -112,7 +110,7 @@ export default function Contact() {
               className="mt-7 inline-flex w-full items-center justify-center gap-2.5 rounded-full bg-whatsapp px-7 py-4 font-semibold text-white shadow-soft transition hover:-translate-y-0.5 hover:brightness-95"
             >
               <WhatsAppIcon className="h-5 w-5" />
-              Send via WhatsApp
+              {c.submit}
             </button>
           </form>
         </Reveal>

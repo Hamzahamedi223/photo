@@ -34,7 +34,7 @@ export default function Feature({
               src={detailImg}
               alt={detailAlt}
               loading="lazy"
-              className="absolute right-0 -bottom-8 aspect-square w-[45%] rounded-3xl border-8 border-cream-50 object-cover shadow-lift"
+              className="absolute end-0 -bottom-8 aspect-square w-[45%] rounded-3xl border-8 border-cream-50 object-cover shadow-lift"
             />
           )}
         </Reveal>
