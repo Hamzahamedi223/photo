@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Memory Print">
+  <defs>
+    <linearGradient id="mpRose" x1="8" y1="6" x2="56" y2="58" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#E3AC9E"/>
+      <stop offset=".55" stop-color="#C0808A"/>
+      <stop offset="1" stop-color="#9A5B66"/>
+    </linearGradient>
+  </defs>
+  <!-- back print, offset -->
+  <rect x="14" y="8.5" width="36" height="30" rx="6" fill="none" stroke="url(#mpRose)" stroke-width="2.6" opacity=".42"/>
+  <!-- front print -->
+  <rect x="8" y="19" width="42" height="36" rx="7.5" fill="none" stroke="url(#mpRose)" stroke-width="3.2"/>
+  <!-- the moment inside the print: a horizon + sun -->
+  <circle cx="20.5" cy="30.5" r="3.4" fill="url(#mpRose)"/>
+  <path d="M12.5 48.5 L23 36.5 L31.5 45.5 L38.5 39 L45.5 48.5 Z" fill="url(#mpRose)" opacity=".85"/>
+</svg>
